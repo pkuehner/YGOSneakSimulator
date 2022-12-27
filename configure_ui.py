@@ -18,24 +18,27 @@ root.title("Configure")
 
 set_entries = []
 labelframe_packs = tk.LabelFrame(root, text="Packs")
-labelframe_packs.pack(fill="both", expand="yes")
 iter = 0
+frame = tk.Frame(labelframe_packs)
 for set_code in set_codes:
-    r,c = divmod(iter, 5)
+    if iter == 10:
+        frame.pack()
+        frame = tk.Frame(labelframe_packs)
     iter+=1
-    frame = tk.Frame(labelframe_packs).pack()
     tk.Label(frame, text=set_code).pack(side=tk.LEFT)
     variable = tk.IntVar(labelframe_packs)
     variable.set(0) # default value
     set_entries.append((set_code, variable))
     w = tk.OptionMenu(frame, variable, *list(range(100)))
     w.pack(side=tk.LEFT)
+frame.pack()
+labelframe_packs.pack(fill="both", expand="yes")
 
 rarities = [
         ("C", "2"),
-        ("R", "2"),
-        ("SP", "2"),
-        ("SSP", "2"),
+        ("R", "1"),
+        ("SP", "1"),
+        ("SSP", "1"),
         ("SR", "1"),
         ("UR", "1"),
         ("UtR", "1"),
@@ -47,12 +50,13 @@ labelframe = tk.LabelFrame(root, text="Weights for Rarities")
 labelframe.pack(fill="both", expand="yes")
 for rarity, weight in rarities:
     frame = tk.Frame(labelframe)
-    frame.pack()
     tk.Label(frame, text=rarity).pack()
     text = tk.StringVar(frame, weight)
     w = tk.Entry(frame, textvariable=text)
-    w.pack(side=tk.BOTTOM)
+    w.pack()
     entries.append((text, rarity))
+    frame.pack(side=tk.LEFT)
+
 
 frame = tk.Frame(root)
 frame.pack()
