@@ -1,3 +1,4 @@
+import time
 from typing import List
 import json
 import random
@@ -7,13 +8,12 @@ packs = {}
 from PIL import Image, ImageTk
 import tkinter as tk
 
-root = tk.Tk()
-root.title("Join")
-root.configure(background="grey")
 
 sets = [("RP01", 4), ("RP02", 4), ("LOB", 5), ("LON", 5), ("MRD", 5), ("MRL", 5), ("PSV", 5), ("LOD", 5)]
 
-
+root = tk.Tk()
+root.title("Join")
+root.configure(background="grey")
 save_button = tk.Button(root, text="SAVE")
 save_button.pack(side=tk.TOP)
 num_card_label = tk.Label(root, text="Num Cards: ")
@@ -58,6 +58,12 @@ with open("card_info.json") as cards_file, open("pack_matching.json") as pack_fi
     cards_dict = json.load(cards_file)
     cards = []
     random.seed(0)
+
+    select_ended = False
+    root_1 = tk.Tk()
+    tk.Button(root_1, text="Quit", command=root_1.destroy).pack()
+    root_1.mainloop()
+
     probability_map = {
         "C": 64,
         "R": 48,
