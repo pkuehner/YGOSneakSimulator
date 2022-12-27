@@ -11,7 +11,7 @@ from PIL import Image, ImageTk
 import tkinter as tk
 
 
-set_codes = ["RP01", "RP02", "LOB", "MRD", "LON", "SDY", "SDJ", "SDP", "SDJ"]
+set_codes = ["RP01", "RP02", "LOB", "MRD", "LON", "SDY", "SDJ", "SDP", "SDK"]
 
 root = tk.Tk()
 root.title("Configure")
@@ -32,14 +32,14 @@ for set_code in set_codes:
     w.pack(side=tk.LEFT)
 
 rarities = [
-        ("C", "64"),
-        ("R", "48"),
-        ("SP", "48"),
-        ("SSP", "32"),
-        ("SR", "16"),
-        ("UR", "8"),
-        ("UtR", "8"),
-        ("ScR", "8"),
+        ("C", "2"),
+        ("R", "2"),
+        ("SP", "2"),
+        ("SSP", "2"),
+        ("SR", "1"),
+        ("UR", "1"),
+        ("UtR", "1"),
+        ("ScR", "1"),
 ]
 
 entries = []
@@ -54,6 +54,14 @@ for rarity, weight in rarities:
     w.pack(side=tk.BOTTOM)
     entries.append((text, rarity))
 
+frame = tk.Frame(root)
+frame.pack()
+tk.Label(frame, text="Seed").pack()
+seed_text = tk.StringVar(frame, random.randint(1, 100))
+seed_entry = tk.Entry(frame, textvariable=seed_text)
+seed_entry.pack(side=tk.RIGHT)
+
+
 def save():
     prob_weights = {}
     for var, rarity in entries:
@@ -66,11 +74,11 @@ def save():
 
     print(sets_and_nums)
     root.destroy()
-    run_ui(sets_and_nums, prob_weights)
-
+    run_ui(sets_and_nums, prob_weights, int(seed_text.get()))
 
 save_button = tk.Button(root, text="GO")
 save_button.pack(side=tk.BOTTOM)
 save_button.bind("<Button-1>", lambda e: save())
+
 
 root.mainloop()

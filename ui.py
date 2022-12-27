@@ -6,7 +6,7 @@ import random
 from PIL import Image, ImageTk
 import tkinter as tk
 
-def run_ui(sets, probability_map):
+def run_ui(sets, probability_map, seed):
     root = tk.Tk()
     root.title("Join")
     root.configure(background="grey")
@@ -56,7 +56,7 @@ def run_ui(sets, probability_map):
         packs_dict = json.load(pack_file)
         cards_dict = json.load(cards_file)
         cards = []
-        random.seed(0)
+        random.seed(seed)
 
 
         for set_id, num_packs in sets:
