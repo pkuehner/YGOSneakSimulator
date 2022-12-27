@@ -3,26 +3,33 @@ from typing import List
 import json
 import random
 
+from ui import run_ui
+
 packs = {}
 
 from PIL import Image, ImageTk
 import tkinter as tk
 
 
-set_codes = ["RP01", "RP02", "LOB"]
+set_codes = ["RP01", "RP02", "LOB", "MRD", "LON", "SDY", "SDJ", "SDP", "SDJ"]
 
 root = tk.Tk()
 root.title("Configure")
 
 set_entries = []
-
+labelframe_packs = tk.LabelFrame(root, text="Packs")
+labelframe_packs.pack(fill="both", expand="yes")
+iter = 0
 for set_code in set_codes:
-    tk.Label(root, text=set_code).pack()
-    variable = tk.IntVar(root)
+    r,c = divmod(iter, 5)
+    iter+=1
+    frame = tk.Frame(labelframe_packs).pack()
+    tk.Label(frame, text=set_code).pack(side=tk.LEFT)
+    variable = tk.IntVar(labelframe_packs)
     variable.set(0) # default value
     set_entries.append((set_code, variable))
-    w = tk.OptionMenu(root, variable, *list(range(100)))
-    w.pack()
+    w = tk.OptionMenu(frame, variable, *list(range(100)))
+    w.pack(side=tk.LEFT)
 
 rarities = [
         ("C", "64"),
@@ -59,6 +66,7 @@ def save():
 
     print(sets_and_nums)
     root.destroy()
+    run_ui(sets_and_nums, prob_weights)
 
 
 save_button = tk.Button(root, text="GO")
