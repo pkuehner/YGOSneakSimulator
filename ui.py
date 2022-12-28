@@ -60,12 +60,18 @@ def run_ui(sets, probability_map, seed):
 
 
         for set_id, num_packs in sets:
-            card_ids = [card[0] for card in packs_dict[set_id]]
-            for iteration in range(num_packs):
-                weights = [probability_map[card[1]] for card in packs_dict[set_id]]
-                cards.extend(
-                    random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
-                )
+            if num_packs > 0:
+                card_ids = [card[0] for card in packs_dict[set_id]]
+                for iteration in range(num_packs):
+                    weights = []
+                    for card in packs_dict[set_id]:
+                        if card[1] in probability_map:
+                            weights.append(probability_map[card[1]])
+                        else:
+                            weights.append(probability_map["UR"])
+                    cards.extend(
+                        random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
+                    )
 
         cards = sorted(
             cards, key=lambda card_id: (cards_dict[str(card_id)]["type"], card_id)
