@@ -6,6 +6,9 @@ from load_sets import get_all_sets
 
 from ui import run_ui
 
+configuration = {}
+with open("configuration.json") as configuration_file:
+    configuration = json.load(configuration_file)
 packs = {}
 
 from PIL import Image, ImageTk
@@ -50,7 +53,7 @@ for set_code in set_codes:
     iter+=1
     tk.Label(frame, text=set_code).pack(side=tk.LEFT)
     variable = tk.IntVar(labelframe_packs)
-    variable.set(0) # default value
+    variable.set(configuration["packs"].get(set_code, 0)) # default value
     set_entries.append((set_code, variable))
     w = tk.OptionMenu(frame, variable, *list(range(100)))
     w.pack(side=tk.LEFT)
@@ -84,7 +87,7 @@ for rarity, weight in rarities:
 frame = tk.Frame(scrollable_frame)
 frame.pack()
 tk.Label(frame, text="Seed").pack()
-seed_text = tk.StringVar(frame, random.randint(1, 100))
+seed_text = tk.StringVar(frame, configuration.get("seed", random.randint(1, 100)))
 seed_entry = tk.Entry(frame, textvariable=seed_text)
 seed_entry.pack(side=tk.RIGHT)
 
