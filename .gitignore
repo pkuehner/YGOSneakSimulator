@@ -2,3 +2,6 @@ pics/
 .vscode/
 __pycache__/
 deck.ydk
+build/
+dist/
+co
