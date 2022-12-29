@@ -4,5 +4,6 @@
         "RP02": 0
     },
     "seed": 1,
-    "banlist": "TCG 01.12.2022"
+    "banlist": "TCG 01.12.2022",
+    "standardCardsActivated": 1
 }

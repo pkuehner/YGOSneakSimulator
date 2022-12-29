@@ -34,7 +34,7 @@ ban_list_var.set(configuration.get("banlist", "No Banlist"))# default value
 ban_list_option_menu = tk.OptionMenu(options_frame, ban_list_var, *forbidden_cards_parser.get_forbidden_list_names())
 ban_list_option_menu.pack()
 
-standard_cards_var = tk.IntVar()
+standard_cards_var = tk.IntVar(root, configuration.get("standardCardsActivated", 0))
 tk.Checkbutton(options_frame, text="With Standard Cards", variable=standard_cards_var).pack()
 
 go_button = tk.Button(options_frame, text="GO")
