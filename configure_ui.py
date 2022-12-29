@@ -25,18 +25,23 @@ set_codes = get_all_sets()
 root = tk.Tk()
 root.title("Configure")
 
-save_button = tk.Button(root, text="GO")
-save_button.pack(side=tk.RIGHT)
-save_button.bind("<Button-1>", lambda e: save())
+options_frame = tk.Frame()
 
 forbidden_cards_parser = ForbiddenCardsParser()
+tk.Label(options_frame, text="Banlist").pack()
 ban_list_var = tk.StringVar(root)
 ban_list_var.set(configuration.get("banlist", "No Banlist"))# default value
-ban_list_option_menu = tk.OptionMenu(root, ban_list_var, *forbidden_cards_parser.get_forbidden_list_names())
-ban_list_option_menu.pack(side=tk.RIGHT)
+ban_list_option_menu = tk.OptionMenu(options_frame, ban_list_var, *forbidden_cards_parser.get_forbidden_list_names())
+ban_list_option_menu.pack()
 
 standard_cards_var = tk.IntVar()
-tk.Checkbutton(root, text="With Standard Cards", variable=standard_cards_var).pack(side=tk.RIGHT)
+tk.Checkbutton(options_frame, text="With Standard Cards", variable=standard_cards_var).pack()
+
+go_button = tk.Button(options_frame, text="GO")
+go_button.pack()
+go_button.bind("<Button-1>", lambda e: save())
+
+options_frame.pack(side=tk.RIGHT)
 
 #Scrolling
 container = tk.Frame(root)
