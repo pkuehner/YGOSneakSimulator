@@ -3,16 +3,21 @@ from typing import List
 import json
 import random
 from load_sets import get_all_sets
-
-from ui import run_ui
-
-configuration = {}
-with open("configuration.json") as configuration_file:
-    configuration = json.load(configuration_file)
-packs = {}
-
 from PIL import Image, ImageTk
 import tkinter as tk
+from ui import run_ui
+from logging import Logger
+
+logger = Logger(__name__)
+
+
+configuration = {}
+try:
+    with open("configuration.json") as configuration_file:
+        configuration = json.load(configuration_file)
+except:
+    logger.warning("No configuration file found, going for defaults")
+packs = {}
 
 
 set_codes = get_all_sets()
@@ -53,7 +58,7 @@ for set_code in set_codes:
     iter+=1
     tk.Label(frame, text=set_code).pack(side=tk.LEFT)
     variable = tk.IntVar(labelframe_packs)
-    variable.set(configuration["packs"].get(set_code, 0)) # default value
+    variable.set(configuration.get("packs", {}).get(set_code, 0)) # default value
     set_entries.append((set_code, variable))
     w = tk.OptionMenu(frame, variable, *list(range(100)))
     w.pack(side=tk.LEFT)
