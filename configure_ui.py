@@ -25,6 +25,10 @@ set_codes = get_all_sets()
 root = tk.Tk()
 root.title("Configure")
 
+save_button = tk.Button(root, text="GO")
+save_button.pack(side=tk.RIGHT)
+save_button.bind("<Button-1>", lambda e: save())
+
 #Scrolling
 container = tk.Frame(root)
 canvas = tk.Canvas(container)
@@ -110,10 +114,6 @@ def save():
     print(sets_and_nums)
     root.destroy()
     run_ui(sets_and_nums, prob_weights, int(seed_text.get()))
-
-save_button = tk.Button(scrollable_frame, text="GO")
-save_button.pack(side=tk.BOTTOM)
-save_button.bind("<Button-1>", lambda e: save())
 
 
 root.mainloop()

@@ -1,4 +1,3 @@
-import time
 from tkinter import filedialog
 from typing import List
 import json
