@@ -7,8 +7,9 @@ from PIL import Image, ImageTk
 import tkinter as tk
 
 from forbidden_cards_parser import FORBIDDEN_STATES, ForbiddenCardsParser
+from helpers import get_standard_card_ids
 
-def run_ui(sets, probability_map, seed, banlist_name):
+def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     root = tk.Tk()
     root.title("Join")
     root.configure(background="grey")
@@ -78,6 +79,9 @@ def run_ui(sets, probability_map, seed, banlist_name):
                 cards.extend(
                     random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
                 )
+
+    if with_standard_cards:
+        cards.extend(get_standard_card_ids())
 
     cards = sorted(
         cards, key=lambda card_id: (cards_dict[str(card_id)]["type"], card_id)
