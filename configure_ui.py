@@ -2,6 +2,7 @@ import time
 from typing import List
 import json
 import random
+from forbidden_cards_parser import ForbiddenCardsParser
 from load_sets import get_all_sets
 from PIL import Image, ImageTk
 import tkinter as tk
@@ -28,6 +29,12 @@ root.title("Configure")
 save_button = tk.Button(root, text="GO")
 save_button.pack(side=tk.RIGHT)
 save_button.bind("<Button-1>", lambda e: save())
+
+forbidden_cards_parser = ForbiddenCardsParser()
+ban_list_var = tk.StringVar(root)
+ban_list_var.set(configuration.get("banlist", "No Banlist"))# default value
+ban_list_option_menu = tk.OptionMenu(root, ban_list_var, *forbidden_cards_parser.get_forbidden_list_names())
+ban_list_option_menu.pack(side=tk.RIGHT)
 
 #Scrolling
 container = tk.Frame(root)
@@ -113,7 +120,7 @@ def save():
 
     print(sets_and_nums)
     root.destroy()
-    run_ui(sets_and_nums, prob_weights, int(seed_text.get()))
+    run_ui(sets_and_nums, prob_weights, int(seed_text.get()), ban_list_var.get())
 
 
 root.mainloop()

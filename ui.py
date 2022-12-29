@@ -8,7 +8,7 @@ import tkinter as tk
 
 from forbidden_cards_parser import FORBIDDEN_STATES, ForbiddenCardsParser
 
-def run_ui(sets, probability_map, seed):
+def run_ui(sets, probability_map, seed, banlist_name):
     root = tk.Tk()
     root.title("Join")
     root.configure(background="grey")
@@ -20,7 +20,7 @@ def run_ui(sets, probability_map, seed):
     card_effect_label.pack(side=tk.TOP)
     
     forbidden_cards_parser = ForbiddenCardsParser()
-    forbidden_cards_list_name = "TCG 01.12.2022"
+    forbidden_cards_list_name = banlist_name
 
     container = tk.Frame(root)
     canvas = tk.Canvas(container)
@@ -121,8 +121,6 @@ def run_ui(sets, probability_map, seed):
             image = Image.blend(image, limited_img, alpha=0.75)
         if forbidden_cards_status == FORBIDDEN_STATES.SEMI_LIMITED:
             image = Image.blend(image, semi_limited_img, alpha=0.75)
-
-        print(cards[index])
 
         if selected[index]:
             image = image.convert("L")
