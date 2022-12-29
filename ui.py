@@ -6,6 +6,8 @@ import random
 from PIL import Image, ImageTk
 import tkinter as tk
 
+from forbidden_cards_parser import FORBIDDEN_STATES, ForbiddenCardsParser
+
 def run_ui(sets, probability_map, seed):
     root = tk.Tk()
     root.title("Join")
@@ -16,6 +18,9 @@ def run_ui(sets, probability_map, seed):
     num_card_label.pack(side=tk.TOP)
     card_effect_label = tk.Label(root, text="")
     card_effect_label.pack(side=tk.TOP)
+    
+    forbidden_cards_parser = ForbiddenCardsParser()
+    forbidden_cards_list_name = "TCG 01.12.2022"
 
     container = tk.Frame(root)
     canvas = tk.Canvas(container)
@@ -80,6 +85,11 @@ def run_ui(sets, probability_map, seed):
 
     images = ["pics/" + str(card_id) + ".jpg" for card_id in cards]
 
+    forbidden_img = Image.open("assets/forbidden.jpg")
+    limited_img = Image.open("assets/limited.jpg")
+    semi_limited_img = Image.open("assets/semi-limited.jpg")
+
+
     selected = [False] * len(images)
     labels = [None] * len(images)
     photos = [None] * len(images)
@@ -103,8 +113,21 @@ def run_ui(sets, probability_map, seed):
     def create_label_for_photo(index):
         r, c = divmod(index, 5)
         image = Image.open(images[index])
+
+        forbidden_cards_status: FORBIDDEN_STATES = forbidden_cards_parser.get_card_forbidden_status(forbidden_cards_list_name, str(cards[index]))
+        if forbidden_cards_status == FORBIDDEN_STATES.FORBIDDEN:
+            image = Image.blend(image, forbidden_img, alpha=0.75)
+        elif forbidden_cards_status == FORBIDDEN_STATES.LIMITED:
+            image = Image.blend(image, limited_img, alpha=0.75)
+        if forbidden_cards_status == FORBIDDEN_STATES.SEMI_LIMITED:
+            image = Image.blend(image, semi_limited_img, alpha=0.75)
+
+        print(cards[index])
+
         if selected[index]:
             image = image.convert("L")
+        
+
         photos[index] = image
         photos_2[index] = ImageTk.PhotoImage(photos[index])
         if not labels[index]:
