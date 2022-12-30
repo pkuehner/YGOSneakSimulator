@@ -25,7 +25,7 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
 
     container = tk.Frame(root)
     canvas = tk.Canvas(container)
-    canvas.config(width=1000, height=1000)
+    canvas.config(width=1500, height=1000)
     scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
     scrollable_frame = tk.Frame(canvas)
 
@@ -80,13 +80,21 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
                     card_ids
                     #random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
                 )
-
+    
     if with_standard_cards:
         cards.extend(get_standard_card_ids())
 
     cards = sorted(
         cards, key=lambda card_id: (cards_dict[str(card_id)]["type"], card_id)
     )
+    
+    card_counts = {}
+    for card_id in cards:
+        card_counts[card_id] = card_counts.get(card_id, 0) +1
+    
+    for card_id in card_counts.keys():
+        for i in range(card_counts.get(card_id)-3):
+            cards.remove(card_id)
 
     images = ["pics/" + str(card_id) + ".jpg" for card_id in cards]
 
@@ -116,7 +124,7 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     save_button.bind("<Button-1>", lambda e: save())
 
     def create_label_for_photo(index):
-        r, c = divmod(index, 5)
+        r, c = divmod(index, 20)
         image = Image.open(images[index])
 
         forbidden_cards_status: FORBIDDEN_STATES = forbidden_cards_parser.get_card_forbidden_status(forbidden_cards_list_name, str(cards[index]))
@@ -129,7 +137,10 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
 
         if selected[index]:
             image = image.convert("L")
-        
+        new_height = 100
+        new_width  = new_height * image.width / image.height
+        image = image.resize((int(new_width), new_height), Image.ANTIALIAS)
+
 
         photos[index] = image
         photos_2[index] = ImageTk.PhotoImage(photos[index])
