@@ -69,7 +69,7 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     for set_id, num_packs in sets:
         if num_packs > 0:
             card_ids = [card[0] for card in packs_dict[set_id]]
-            for iteration in range(num_packs):
+            for iteration in range(3):
                 weights = []
                 for card in packs_dict[set_id]:
                     if card[1] in probability_map:
@@ -77,7 +77,8 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
                     else:
                         weights.append(probability_map["UR"])
                 cards.extend(
-                    random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
+                    card_ids
+                    #random.choices([card[0] for card in packs_dict[set_id]], k=9, weights=weights)
                 )
 
     if with_standard_cards:

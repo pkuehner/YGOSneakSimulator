@@ -1,9 +1,14 @@
 {
     "packs": {
-        "RP01": 0,
-        "RP02": 0
+        "LON": 1,
+        "DB1": 1,
+        "DB2": 1,
+        "DPY": 1,
+        "DPK": 1,
+        "RP01": 1,
+        "RP02": 1
     },
-    "seed": 1,
-    "banlist": "TCG 01.12.2022",
+    "seed": 50,
+    "banlist": "2005.4 GOAT",
     "standardCardsActivated": 1
-}
+} 
