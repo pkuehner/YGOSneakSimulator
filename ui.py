@@ -19,13 +19,12 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     num_card_label.pack(side=tk.TOP)
     card_effect_label = tk.Label(root, text="")
     card_effect_label.pack(side=tk.TOP)
-    
     forbidden_cards_parser = ForbiddenCardsParser()
     forbidden_cards_list_name = banlist_name
 
     container = tk.Frame(root)
     canvas = tk.Canvas(container)
-    canvas.config(width=1500, height=1000)
+    canvas.config(width=1500, height=10000)
     scrollbar = tk.Scrollbar(container, orient="vertical", command=canvas.yview)
     scrollable_frame = tk.Frame(canvas)
 
@@ -44,18 +43,18 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
-
-    def button_click(card_id, photo):
-        print(card_id)
-        photo.convert("L")
-
-
-    def on_enter(card_id):
+    huge = [-1]
+    def on_enter(card_id, index):
         card_effect_label.configure(text=cards_dict[str(card_id)]["desc"])
+        huge[0] = index
+        create_label_for_photo(index)
 
 
-    def on_leave(card_id):
+    def on_leave(card_id, index):
         card_effect_label.configure(text="")
+        huge[0] = -1
+        create_label_for_photo(index)
+
 
     packs_dict = {}
     cards_dict = {}
@@ -124,7 +123,7 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
     save_button.bind("<Button-1>", lambda e: save())
 
     def create_label_for_photo(index):
-        r, c = divmod(index, 20)
+        r, c = divmod(index, 15)
         image = Image.open(images[index])
 
         forbidden_cards_status: FORBIDDEN_STATES = forbidden_cards_parser.get_card_forbidden_status(forbidden_cards_list_name, str(cards[index]))
@@ -139,7 +138,8 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
             image = image.convert("L")
         new_height = 100
         new_width  = new_height * image.width / image.height
-        image = image.resize((int(new_width), new_height), Image.ANTIALIAS)
+        if index != huge[0]:
+            image = image.resize((int(new_width), new_height), Image.ANTIALIAS)
 
 
         photos[index] = image
@@ -154,8 +154,8 @@ def run_ui(sets, probability_map, seed, banlist_name, with_standard_cards):
         labels[index].photo = photos[index]
         labels[index].grid(row=r, column=c)
         labels[index].bind("<Button-1>", lambda e: button_click(index))
-        labels[index].bind("<Enter>", lambda e: on_enter(cards[index]))
-        labels[index].bind("<Leave>", lambda e: on_leave(cards[index]))
+        labels[index].bind("<Enter>", lambda e: on_enter(cards[index], index))
+        labels[index].bind("<Leave>", lambda e: on_leave(cards[index], index))
 
     def button_click(index):
         print(cards[index])

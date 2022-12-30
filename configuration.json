@@ -1,11 +1,1 @@
-{
-    "packs": {
-        "RP01": 1,
-        "RP02": 1,
-        "DB1": 1,
-        "DB2": 1
-    },
-    "seed": 50,
-    "banlist": "2005.4 GOAT",
-    "standardCardsActivated": 1
-} 
+{     "packs": {         "LON": 1,         "DB1": 1,         "DB2": 1,         "DPY": 1,         "DPK": 1,         "RP01": 1,         "RP02": 1,         "SDY": 1,         "SDK": 1,         "SDJ": 1     },     "seed": 50,     "banlist": "2005.4 GOAT",     "standardCardsActivated": 1 }
